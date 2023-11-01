@@ -15,37 +15,10 @@ Create table gasto	(
 							Constraint FK_gasto_consorcio FOREIGN KEY (idprovincia,idlocalidad,idconsorcio) REFERENCES consorcio(idprovincia,idlocalidad,idconsorcio),
 							Constraint FK_gasto_tipo FOREIGN KEY (idtipogasto) REFERENCES tipogasto(idtipogasto)					     					     						 					     					     
 							)
-*/
---TABLA CON MILLON DE REGISTROS DE GASTO
-
-
--- INICIO BUCLE
 /*
-DECLARE @id INT;
-DECLARE @maxID INT;
-
--- Inicializar variables
-SET @id = 1;
-SELECT @maxID = 125;
-
--- Iniciar el bucle WHILE
-WHILE @id <= @maxID
-BEGIN
-
-    insert into gasto
-    select	idprovincia,
-			idlocalidad,
-			idconsorcio,
-			periodo,
-			fechapago,
-			idtipogasto,
-			importe from gasto
-
-    -- Incrementar el ID para pasar al siguiente registro
-    SET @id = @id + 1;
-END;
+	TAREA: Insertar un millon de registros
+	SELECT * FROM [dbo].[gastoMillon];
 */
--- FINAL BUCLE
 
 
 --ELIMINAR RESTRICCION DE CLAVE PRIMARIA PARA CREAR IX_ClusteredIndex
@@ -61,7 +34,7 @@ drop Constraint PK_gasto
 
 
 
--- Õndice Clustered
+-- √çndice Clustered
 --select * from gasto where idgasto in (999,800,7087)					-- Busqueda sin indice Clustered
 
 CREATE CLUSTERED INDEX IX_ClusteredIndex ON gasto(idgasto)				-- Crear indice clustered
@@ -72,7 +45,7 @@ CREATE CLUSTERED INDEX IX_ClusteredIndex ON gasto(idgasto)				-- Crear indice cl
 
 
 
--- Õndice Non-Clustered
+-- √çndice Non-Clustered
 --select periodo from gasto where periodo in (10,7,3)					-- Busqueda sin indice Non-Clustered 
 
 CREATE NONCLUSTERED INDEX IX_NonClusteredIndex ON gasto(periodo)		-- Crear indice Non-Clustered
@@ -83,7 +56,7 @@ CREATE NONCLUSTERED INDEX IX_NonClusteredIndex ON gasto(periodo)		-- Crear indic
 
 
 
--- Õndice Unique
+-- √çndice Unique
 --select * from gasto where idgasto in (10,7,3)							-- Busqueda sin indice Unique
 
 CREATE UNIQUE INDEX IX_UniqueIndex ON gasto(idgasto)					-- Crear indice Unique
@@ -94,24 +67,24 @@ CREATE UNIQUE INDEX IX_UniqueIndex ON gasto(idgasto)					-- Crear indice Unique
 
 
 
--- Õndice con columnas incluidas 
---select fechapago, idtipogasto from gasto where periodo in (10,7,3)	-- Busqueda sin Õndice con columnas incluidas 
+-- √çndice con columnas incluidas 
+--select fechapago, idtipogasto from gasto where periodo in (10,7,3)	-- Busqueda sin √çndice con columnas incluidas 
 
 CREATE NONCLUSTERED INDEX IX_IndexColIncluidas ON gasto(periodo)
-INCLUDE (fechapago, idtipogasto);										-- Crear Õndice con columnas incluidas
+INCLUDE (fechapago, idtipogasto);										-- Crear √çndice con columnas incluidas
 
---select fechapago, idtipogasto from gasto where periodo in (10,7,3)	-- Busqueda con Õndice con columnas incluidas 
+--select fechapago, idtipogasto from gasto where periodo in (10,7,3)	-- Busqueda con √çndice con columnas incluidas 
 
 --drop index IX_IndexColIncluidas ON gasto								-- Eliminar indice
 
 
 
--- Õndice Filtrado
---select * from gasto where importe = 79395.75							-- Busqueda sin Õndice Filtrado 
+-- √çndice Filtrado
+--select * from gasto where importe = 79395.75							-- Busqueda sin √çndice Filtrado 
 
 CREATE NONCLUSTERED INDEX IX_FilteredIndex ON gasto(importe)			
-WHERE importe > 50000;													-- Crear Õndice Filtrado
+WHERE importe > 50000;													-- Crear √çndice Filtrado
 
---select * from gasto where importe = 79395.75							-- Busqueda con Õndice Filtrado
+--select * from gasto where importe = 79395.75							-- Busqueda con √çndice Filtrado
 
 --drop index IX_FilteredIndex ON gasto									-- Eliminar indice
