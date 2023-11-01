@@ -1,6 +1,6 @@
 --DBCC FREEPROCCACHE		--limpia Cache
 --DBCC DROPCLEANBUFFERS		--limpia Buffer
-
+-- Version: Microsoft SQL Server 2019 (RTM) - 15.0.2000.5 (X64) Express Edition (64-bit) 
 --TABLA CON MILLON DE REGISTROS DE GASTO
 /* 
 Create table gasto	(
