@@ -16,8 +16,8 @@ Create table gasto	(
 							Constraint FK_gasto_tipo FOREIGN KEY (idtipogasto) REFERENCES tipogasto(idtipogasto)					     					     						 					     					     
 							)
 /*
-	TAREA: Insertar un millon de registros
-	SELECT * FROM [dbo].[gastoMillon];
+		TAREA: Insertar un millon de registros
+		SELECT * FROM [dbo].[gastoMillon];
 */
 
 
