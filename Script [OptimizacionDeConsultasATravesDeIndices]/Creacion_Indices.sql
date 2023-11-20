@@ -2,92 +2,87 @@
 --DBCC FREEPROCCACHE		--limpia Cache
 --DBCC DROPCLEANBUFFERS		--limpia Buffer
 
--- Eliminar clave primaria
-alter table gastoMillon
-drop Constraint PK_gastoMillon
-
-
 -- Creacion de indices
 
--- Õndice Clustered
-select * from gasto where idgasto in (999,800,7087)						-- Busqueda sin indice Clustered
+-- √çndice Clustered
+select * from gastoMillon where idgasto in (999,800,7087)						-- Busqueda sin indice Clustered
 
-CREATE CLUSTERED INDEX IX_ClusteredIndex ON gasto(idgasto)				-- Crear indice clustered
+CREATE CLUSTERED INDEX IX_ClusteredIndex ON gastoMillon(idgasto)				-- Crear indice clustered
 
---select * from gasto where idgasto in (999,800,7087)					-- Busqueda con indice Clustered 
+--select * from gastoMillon where idgasto in (999,800,7087)					-- Busqueda con indice Clustered 
 
---drop index IX_ClusteredIndex ON gasto									-- Eliminar indice
-
-
--- Õndice Non-Clustered
-select periodo from gasto where periodo in (10,7,3)						-- Busqueda sin indice Non-Clustered 
-
-CREATE NONCLUSTERED INDEX IX_NonClusteredIndex ON gasto(periodo)		-- Crear indice Non-Clustered
-
---select periodo from gasto where periodo in (10,7,3)					-- Busqueda con indice Non-Clustered 
-
---drop index IX_NonClusteredIndex ON gasto								-- Eliminar indice
+--drop index IX_ClusteredIndex ON gastoMillon								-- Eliminar indice
 
 
--- Õndice Unique
-select * from gasto where idgasto in (10,7,3)							-- Busqueda sin indice Unique
+-- √çndice Non-Clustered
+select periodo from gastoMillon where periodo in (10,7,3)						-- Busqueda sin indice Non-Clustered 
 
-CREATE UNIQUE INDEX IX_UniqueIndex ON gasto(idgasto)					-- Crear indice Unique
+CREATE NONCLUSTERED INDEX IX_NonClusteredIndex ON gastoMillon(periodo)		-- Crear indice Non-Clustered
 
---select * from gasto where idgasto in (10,7,3)							-- Busqueda con indice Unique
+--select periodo from gastoMillon where periodo in (10,7,3)					-- Busqueda con indice Non-Clustered 
 
---drop index IX_UniqueIndex ON gasto									-- Eliminar indice
+--drop index IX_NonClusteredIndex ON gastoMillon								-- Eliminar indice
 
 
--- Õndice con columnas incluidas 
-select fechapago, idtipogasto from gasto where periodo in (10,7,3)		-- Busqueda sin Õndice con columnas incluidas 
+-- √çndice Unique
+select * from gastoMillon where idgasto in (10,7,3)							-- Busqueda sin indice Unique
 
-CREATE NONCLUSTERED INDEX IX_IndexColIncluidas ON gasto(periodo)		-- Crear Õndice con columnas incluidas
+CREATE UNIQUE INDEX IX_UniqueIndex ON gastoMillon(idgasto)					-- Crear indice Unique
+
+--select * from gastoMillon where idgasto in (10,7,3)							-- Busqueda con indice Unique
+
+--drop index IX_UniqueIndex ON gastoMillon									-- Eliminar indice
+
+
+-- √çndice con columnas incluidas 
+select fechapago, idtipogasto from gastoMillon where periodo in (10,7,3)		-- Busqueda sin √çndice con columnas incluidas 
+
+CREATE NONCLUSTERED INDEX IX_IndexColIncluidas ON gastoMillon(periodo)		-- Crear √çndice con columnas incluidas
 INCLUDE (fechapago, idtipogasto);										
 
---select fechapago, idtipogasto from gasto where periodo in (10,7,3)	-- Busqueda con Õndice con columnas incluidas 
+--select fechapago, idtipogasto from gastoMillon where periodo in (10,7,3)	-- Busqueda con √çndice con columnas incluidas 
 
---drop index IX_IndexColIncluidas ON gasto								-- Eliminar indice
+--drop index IX_IndexColIncluidas ON gastoMillon								-- Eliminar indice
 
 
--- Õndice Filtrado
-select * from gasto where importe = 79395.75							-- Busqueda sin Õndice Filtrado 
+-- √çndice Filtrado
+select * from gastoMillon where importe = 79395.75							-- Busqueda sin √çndice Filtrado 
 
-CREATE NONCLUSTERED INDEX IX_FilteredIndex ON gasto(importe)			-- Crear Õndice Filtrado
+CREATE NONCLUSTERED INDEX IX_FilteredIndex ON gastoMillon(importe)			-- Crear √çndice Filtrado
 WHERE importe > 50000;													
 
---select * from gasto where importe = 79395.75							-- Busqueda con Õndice Filtrado
+--select * fromgastoMillon where importe = 79395.75							-- Busqueda con √çndice Filtrado
 
---drop index IX_FilteredIndex ON gasto									-- Eliminar indice
+--drop index IX_FilteredIndex ON gastoMillon									-- Eliminar indice
 
 
 /*
-	TIEMPOS DE RESPUESTAS SEG⁄N TIPO DE INDICES
+	TIEMPOS DE RESPUESTAS SEG√öN TIPO DE INDICES
 
-Õndices Agrupado o Clustered:
--costo/tiempo de b˙squeda sin Ìndice: 0.126 segundos
--costo/tiempo de creaciÛn de Ìndice: 2.113 segundos
--costo/tiempo de b˙squeda con Ìndice: menos de 0.000 segundos
+√çndices Agrupado o Clustered:
+-costo/tiempo de b√∫squeda sin √≠ndice: 0.126 segundos
+-costo/tiempo de creaci√≥n de √≠ndice: 2.113 segundos
+-costo/tiempo de b√∫squeda con √≠ndice: menos de 0.000 segundos
 
 
-Õndices No Agrupados o Non-Clustered
--costo/tiempo de b˙squeda sin Ìndice: 0.565 segundos
--costo/tiempo de creaciÛn de Ìndice: 3.308 segundos
--costo/tiempo de b˙squeda con Ìndice: 0.431 segundos
+√çndices No Agrupados o Non-Clustered
+-costo/tiempo de b√∫squeda sin √≠ndice: 0.565 segundos
+-costo/tiempo de creaci√≥n de √≠ndice: 3.308 segundos
+-costo/tiempo de b√∫squeda con √≠ndice: 0.431 segundos
 
-Õndices ⁄nicos o Unique
--costo/tiempo de b˙squeda sin Ìndice: 0.149 segundos
--costo/tiempo de creaciÛn de Ìndice: 1.283 segundos
--costo/tiempo de b˙squeda con Ìndice: menos de 0.000 segundos
+√çndices √önicos o Unique
+-costo/tiempo de b√∫squeda sin √≠ndice: 0.149 segundos
+-costo/tiempo de creaci√≥n de √≠ndice: 1.283 segundos
+-costo/tiempo de b√∫squeda con √≠ndice: menos de 0.000 segundos
 
-Õndices con Columnas Incluidas
--costo/tiempo de b˙squeda sin Ìndice: 0.403 segundos
--costo/tiempo de creaciÛn de Ìndice: 3.626 segundos
--costo/tiempo de b˙squeda con Ìndice: 0.245 segundos
+√çndices con Columnas Incluidas
+-costo/tiempo de b√∫squeda sin √≠ndice: 0.403 segundos
+-costo/tiempo de creaci√≥n de √≠ndice: 3.626 segundos
+-costo/tiempo de b√∫squeda con √≠ndice: 0.245 segundos
 
-Õndices Filtrados
--costo/tiempo de b˙squeda sin Ìndice: 0.149 segundos
--costo/tiempo de creaciÛn de Ìndice: 0.81 segundos
--costo/tiempo de b˙squeda con Ìndice: 0.006 segundos
+√çndices Filtrados
+-costo/tiempo de b√∫squeda sin √≠ndice: 0.149 segundos
+-costo/tiempo de creaci√≥n de √≠ndice: 0.81 segundos
+-costo/tiempo de b√∫squeda con √≠ndice: 0.006 segundos
 
 */
