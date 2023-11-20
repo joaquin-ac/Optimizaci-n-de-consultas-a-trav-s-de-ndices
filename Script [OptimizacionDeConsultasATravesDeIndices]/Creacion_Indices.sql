@@ -51,7 +51,7 @@ select * from gastoMillon where importe = 79395.75							-- Busqueda sin Índice
 CREATE NONCLUSTERED INDEX IX_FilteredIndex ON gastoMillon(importe)			-- Crear Índice Filtrado
 WHERE importe > 50000;													
 
---select * fromgastoMillon where importe = 79395.75							-- Busqueda con Índice Filtrado
+--select * from gastoMillon where importe = 79395.75							-- Busqueda con Índice Filtrado
 
 --drop index IX_FilteredIndex ON gastoMillon									-- Eliminar indice
 
